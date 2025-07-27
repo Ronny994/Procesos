@@ -1,0 +1,779 @@
+
+
+<immersive>
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Guía Interactiva: Matricular Armas en El Salvador</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Warm Neutrals -->
+
+    <!-- Application Structure Plan: Se ha diseñado una aplicación de una sola página con navegación por pestañas para segmentar la información de manera lógica (Inicio, Elegibilidad, Requisitos, Proceso, Costos, Tipos de Permisos, Contacto). Esta estructura se eligió porque los usuarios probablemente buscan respuestas a preguntas específicas, y las pestañas permiten un acceso directo y rápido sin necesidad de desplazarse por un documento largo. El flujo guía al usuario desde los conceptos generales y alertas importantes (como la amnistía) hacia los detalles específicos, como requisitos y costos, lo que refleja un proceso de toma de decisiones lógico y mejora la usabilidad. -->
+
+    <!-- Visualization & Content Choices:
+
+        - Alerta de Amnistía (Inicio): Report Info -> Decreto transitorio de 90 días. Goal -> Alertar sobre información crítica y urgente. Viz/Method -> Bloque de alerta prominente. Interaction -> Ninguna, es informativa. Justification -> Asegura que la información más sensible al tiempo sea visible de inmediato. Library/Method -> HTML/Tailwind.
+
+        - Comparación de Requisitos (Requisitos): Report Info -> Requisitos para persona natural y jurídica. Goal -> Organizar. Viz/Method -> Pestañas internas o toggles para cambiar entre los dos tipos de solicitante. Interaction -> Clic para cambiar la vista. Justification -> Evita la sobrecarga de información presentando solo el conjunto de datos relevante para el usuario a la vez. Library/Method -> HTML/Tailwind, JS.
+
+        - Gráficos de Costos y Multas (Costos y Multas): Report Info -> Tarifas de licencias y multas calculadas sobre el salario mínimo. Goal -> Comparar. Viz/Method -> Dos gráficos de barras. Interaction -> Tooltips en hover para mostrar valores exactos. Justification -> La visualización de datos es mucho más efectiva que las tablas para comparar valores numéricos y comprender el impacto financiero de las multas. Library/Method -> Chart.js (Canvas).
+
+        - Diagrama de Proceso (Proceso): Report Info -> Pasos para la matriculación. Goal -> Organizar/Mostrar secuencia. Viz/Method -> Diagrama de flujo vertical con pasos numerados. Interaction -> Hover para resaltar pasos. Justification -> Simplifica un procedimiento burocrático complejo en una guía visual fácil de seguir. Library/Method -> HTML/Tailwind.
+
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+
+        body { font-family: 'Inter', sans-serif; }
+
+        .chart-container {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 600px;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+            height: 350px;
+
+            max-height: 400px;
+
+        }
+
+        @media (min-width: 768px) {
+
+            .chart-container { height: 400px; }
+
+        }
+
+        .tab-active {
+
+            border-bottom-color: #2D6A8D;
+
+            color: #2D6A8D;
+
+            font-weight: 600;
+
+        }
+
+        .tab-inactive {
+
+            border-bottom-color: transparent;
+
+            color: #6B7280;
+
+        }
+
+        .section { display: none; }
+
+        .section-active { display: block; }
+
+    </style>
+
+</head>
+
+<body class="bg-[#F5F5F5] text-[#424242]">
+
+ 
+
+    <div class="container mx-auto p-4 md:p-8">
+
+       
+
+        <header class="text-center mb-8">
+
+            <h1 class="text-3xl md:text-4xl font-bold text-[#2D6A8D]">Guía Interactiva de Matriculación de Armas</h1>
+
+            <p class="text-lg text-gray-600 mt-2">Un recurso para entender el proceso en El Salvador</p>
+
+        </header>
+
+ 
+
+        <nav class="mb-8 border-b border-gray-300">
+
+            <ul class="flex flex-wrap -mb-px justify-center text-sm font-medium text-center">
+
+                <li class="mr-2"><a href="#" data-target="inicio" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Inicio</a></li>
+
+                <li class="mr-2"><a href="#" data-target="elegibilidad" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Elegibilidad</a></li>
+
+                <li class="mr-2"><a href="#" data-target="requisitos" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Requisitos</a></li>
+
+                <li class="mr-2"><a href="#" data-target="proceso" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Proceso</a></li>
+
+                <li class="mr-2"><a href="#" data-target="costos" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Costos y Multas</a></li>
+
+                <li class="mr-2"><a href="#" data-target="permisos" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Tipos de Permisos</a></li>
+
+                <li class="mr-2"><a href="#" data-target="contacto" class="nav-tab inline-block p-4 border-b-2 rounded-t-lg">Contacto</a></li>
+
+            </ul>
+
+        </nav>
+
+ 
+
+        <main>
+
+            <section id="inicio" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">Bienvenido a la Guía de Matriculación de Armas</h2>
+
+                    <p class="mb-4">Esta herramienta interactiva está diseñada para simplificar y aclarar el proceso de registro de armas de fuego en El Salvador, según la Ley de Control y Regulación de Armas, Municiones, Explosivos y Artículos Similares. Navegue por las pestañas para encontrar información detallada sobre quién puede solicitar, qué documentos necesita, los pasos a seguir, los costos asociados y mucho más.</p>
+
+                   
+
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md" role="alert">
+
+                        <p class="font-bold">¡Atención! Decreto Transitorio de Legalización</p>
+
+                        <p>Se ha aprobado un decreto que ofrece una oportunidad única de <strong>90 días para legalizar armas no registradas</strong>. Durante este período, no se exigirá factura de compra (se sustituye por un acta notarial) y no habrá acción penal o civil contra quienes regularicen sus armas, siempre que no estén vinculadas a delitos. ¡Aproveche esta ventana de tiempo para cumplir con la ley!</p>
+
+                    </div>
+
+                    <p class="mt-4">El objetivo de esta guía es proporcionar claridad. Sin embargo, toda la información debe ser verificada con las fuentes oficiales del Ministerio de la Defensa Nacional, la única entidad autorizada para el registro y control de armas en el país.</p>
+
+                </div>
+
+            </section>
+
+ 
+
+            <section id="elegibilidad" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">¿Quién Puede Matricular un Arma?</h2>
+
+                    <p class="mb-6">Para poder matricular un arma de fuego en El Salvador, es necesario cumplir con ciertos criterios fundamentales de elegibilidad. Estos requisitos aseguran que los poseedores de armas sean ciudadanos responsables y aptos. A continuación se detallan los criterios de edad, nacionalidad y antecedentes.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+
+                        <div class="bg-gray-50 p-6 rounded-lg">
+
+                            <h3 class="font-bold text-lg mb-2">Criterios de Edad</h3>
+
+                            <ul class="list-disc list-inside space-y-2">
+
+                                <li><strong>21 años cumplidos:</strong> Para matrículas de tenencia, conducción y colección.</li>
+
+                                <li><strong>24 años cumplidos:</strong> Para matrícula de portación de arma.</li>
+
+                                <li><strong>Excepción de 18 años:</strong> Para miembros activos de la Fuerza Armada, PNC, Academia Nacional de Seguridad Pública y quienes hayan prestado servicio militar.</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-lg">
+
+                            <h3 class="font-bold text-lg mb-2">Nacionalidad y Antecedentes</h3>
+
+                             <ul class="list-disc list-inside space-y-2">
+
+                                <li>Ser salvadoreño por nacimiento o naturalizado.</li>
+
+                                <li>Extranjeros con residencia definitiva en el país.</li>
+
+                                <li><strong>Indispensable:</strong> Carecer de antecedentes penales y policiales al momento de la solicitud.</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+ 
+
+            <section id="requisitos" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">Documentos y Requisitos Necesarios</h2>
+
+                    <p class="mb-6">El proceso de matriculación requiere la presentación de una serie de documentos que validan la identidad del solicitante y la propiedad del arma. Los requisitos varían si el solicitante es una persona natural o una entidad jurídica. Utilice los botones para ver la lista de requisitos correspondiente.</p>
+
+                    <div class="mb-4 flex justify-center">
+
+                        <button id="btn-natural" class="px-4 py-2 bg-[#2D6A8D] text-white rounded-l-lg">Persona Natural</button>
+
+                        <button id="btn-juridica" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-r-lg">Persona Jurídica</button>
+
+                    </div>
+
+ 
+
+                    <div id="req-natural" class="req-content">
+
+                        <h3 class="text-xl font-semibold mb-4 text-center">Requisitos para Persona Natural</h3>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+
+                            <div>
+
+                                <h4 class="font-bold">Documentación Personal</h4>
+
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+
+                                    <li>Formulario de solicitud oficial del MDN.</li>
+
+                                    <li>DUI (Original y fotocopia).</li>
+
+                                    <li>NIT (Original y fotocopia).</li>
+
+                                    <li>Partida de Nacimiento (Original o copia certificada).</li>
+
+                                    <li>Constancia de carencia de antecedentes penales y policiales.</li>
+
+                                    <li>Fotocopia de la licencia para uso de armas (si ya la posee).</li>
+
+                                </ul>
+
+                            </div>
+
+                            <div>
+
+                                <h4 class="font-bold">Documentación del Arma y Exámenes</h4>
+
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+
+                                    <li>Factura o documento de propiedad del arma.</li>
+
+                                    <li><strong>Excepción (Amnistía):</strong> Acta notarial si legaliza un arma no registrada.</li>
+
+                                    <li>Cuatro municiones del calibre del arma para huella balística.</li>
+
+                                    <li>Aprobación de examen teórico y práctico (gratuito).</li>
+
+                                    <li>Aprobación de examen psicológico.</li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+ 
+
+                    <div id="req-juridica" class="req-content hidden">
+
+                        <h3 class="text-xl font-semibold mb-4 text-center">Requisitos para Persona Jurídica</h3>
+
+                        <ul class="list-disc list-inside mt-2 space-y-2 max-w-2xl mx-auto">
+
+                            <li>Fotocopia certificada de la escritura de constitución de la empresa.</li>
+
+                            <li>Credencial vigente del Representante Legal.</li>
+
+                            <li>Matrícula de comercio de la empresa.</li>
+
+                            <li>NIT y número de registro fiscal de la empresa.</li>
+
+                            <li>Declaración jurada ante notario sobre la veracidad de la información.</li>
+
+                            <li>Constancias de carencia de antecedentes penales y policiales del <strong>propietario, representante legal y todos los miembros de la junta directiva</strong>.</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+ 
+
+            <section id="proceso" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">El Proceso de Matriculación Paso a Paso</h2>
+
+                    <p class="mb-6">Matricular un arma de fuego sigue un proceso estructurado que garantiza la legalidad y el control. Aunque los detalles pueden variar si el arma es nueva, heredada o parte de un traspaso, los pasos fundamentales se describen a continuación. Este flujo asegura que cada arma sea debidamente inspeccionada y registrada.</p>
+
+                    <div class="relative border-l-2 border-dashed border-[#2D6A8D] ml-6 md:ml-0 md:border-l-0 md:border-t-2 md:w-full md:flex">
+
+                        <div class="mb-8 md:mb-0 md:flex-1 relative">
+
+                            <div class="absolute -left-8 -top-2 md:top-auto md:-top-5 md:left-1/2 md:-translate-x-1/2 w-12 h-12 bg-[#2D6A8D] text-white rounded-full flex items-center justify-center font-bold">1</div>
+
+                            <div class="ml-8 md:ml-0 md:mt-10 md:text-center">
+
+                                <h4 class="font-bold text-lg">Preparación y Solicitud</h4>
+
+                                <p class="text-sm text-gray-600">Reúna todos los documentos requeridos para persona natural o jurídica y complete el formulario oficial de solicitud del MDN.</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-8 md:mb-0 md:flex-1 relative">
+
+                            <div class="absolute -left-8 -top-2 md:top-auto md:-top-5 md:left-1/2 md:-translate-x-1/2 w-12 h-12 bg-[#2D6A8D] text-white rounded-full flex items-center justify-center font-bold">2</div>
+
+                            <div class="ml-8 md:ml-0 md:mt-10 md:text-center">
+
+                                <h4 class="font-bold text-lg">Presentación</h4>
+
+                                <p class="text-sm text-gray-600">Presente la solicitud y la documentación en la Oficina de Registro y Control de Armas de Fuego del MDN.</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-8 md:mb-0 md:flex-1 relative">
+
+                            <div class="absolute -left-8 -top-2 md:top-auto md:-top-5 md:left-1/2 md:-translate-x-1/2 w-12 h-12 bg-[#2D6A8D] text-white rounded-full flex items-center justify-center font-bold">3</div>
+
+                            <div class="ml-8 md:ml-0 md:mt-10 md:text-center">
+
+                                <h4 class="font-bold text-lg">Exámenes y Verificación</h4>
+
+                                <p class="text-sm text-gray-600">Apruebe los exámenes teórico, práctico y psicológico. El MDN verificará los datos del arma y del solicitante.</p>
+
+                            </div>
+
+                        </div>
+
+                         <div class="mb-8 md:mb-0 md:flex-1 relative">
+
+                            <div class="absolute -left-8 -top-2 md:top-auto md:-top-5 md:left-1/2 md:-translate-x-1/2 w-12 h-12 bg-[#2D6A8D] text-white rounded-full flex items-center justify-center font-bold">4</div>
+
+                            <div class="ml-8 md:ml-0 md:mt-10 md:text-center">
+
+                                <h4 class="font-bold text-lg">Toma de Huella Balística</h4>
+
+                                <p class="text-sm text-gray-600">Entregue 4 municiones para que se tomen las huellas balísticas del arma, creando un registro único para futuras investigaciones.</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="md:flex-1 relative">
+
+                            <div class="absolute -left-8 -top-2 md:top-auto md:-top-5 md:left-1/2 md:-translate-x-1/2 w-12 h-12 bg-[#2D6A8D] text-white rounded-full flex items-center justify-center font-bold">5</div>
+
+                            <div class="ml-8 md:ml-0 md:mt-10 md:text-center">
+
+                                <h4 class="font-bold text-lg">Emisión de Matrícula</h4>
+
+                                <p class="text-sm text-gray-600">Una vez aprobado todo el proceso, el MDN emitirá la matrícula correspondiente para su arma de fuego.</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+ 
+
+            <section id="costos" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">Costos de Trámites y Multas por Incumplimiento</h2>
+
+                    <p class="mb-6">El proceso de matriculación y el mantenimiento de la legalidad de un arma de fuego conllevan costos directos por trámites y posibles multas en caso de incumplimiento. Los gráficos a continuación visualizan estas tarifas para facilitar su comprensión. Las multas se basan en el salario mínimo vigente ($251.70).</p>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+
+                        <div>
+
+                            <h3 class="text-xl font-semibold mb-2 text-center">Tarifas de Licencias y Trámites</h3>
+
+                            <div class="chart-container">
+
+                                <canvas id="costosChart"></canvas>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="text-xl font-semibold mb-2 text-center">Multas Comunes por Infracción</h3>
+
+                            <div class="chart-container">
+
+                                <canvas id="multasChart"></canvas>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+ 
+
+            <section id="permisos" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">Tipos de Licencias y Matrículas</h2>
+
+                    <p class="mb-6">La ley salvadoreña diferencia entre la "licencia", que es el permiso personal para usar un arma, y la "matrícula", que es el registro específico del arma. Existen varios tipos de matrículas, cada una con un propósito y período de vigencia distinto, reflejando diferentes niveles de riesgo y uso.</p>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+
+                        <div class="bg-gray-50 p-6 rounded-lg text-center">
+
+                            <h3 class="font-bold text-lg mb-2">Tenencia y Conducción</h3>
+
+                            <p class="text-gray-600 mb-2">Permite tener el arma en su propiedad (casa, negocio) y transportarla descargada.</p>
+
+                            <p class="font-bold text-xl text-[#2D6A8D]">Vigencia: 5 años</p>
+
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-lg text-center border-2 border-[#2D6A8D]">
+
+                            <h3 class="font-bold text-lg mb-2">Portación</h3>
+
+                            <p class="text-gray-600 mb-2">Faculta para llevar el arma consigo, cargada y lista para su uso, fuera de su propiedad.</p>
+
+                            <p class="font-bold text-xl text-[#2D6A8D]">Vigencia: 3 años</p>
+
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-lg text-center">
+
+                            <h3 class="font-bold text-lg mb-2">Colección</h3>
+
+                            <p class="text-gray-600 mb-2">Para armas con valor histórico, científico o artístico. No son para uso activo.</p>
+
+                            <p class="font-bold text-xl text-[#2D6A8D]">Vigencia: Permanente</p>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-center mt-6 text-sm text-gray-500">Recuerde que las licencias para uso, reparación o recarga de munición también deben renovarse cada 3 años.</p>
+
+                </div>
+
+            </section>
+
+ 
+
+            <section id="contacto" class="section">
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+
+                    <h2 class="text-2xl font-bold mb-4 text-[#2D6A8D]">Contacto y Recursos Oficiales</h2>
+
+                     <p class="mb-6">Para realizar cualquier trámite, resolver dudas o descargar formularios, es fundamental acudir a las fuentes oficiales. El Ministerio de la Defensa Nacional es la única entidad encargada de estos procesos.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+
+                        <div class="bg-gray-50 p-6 rounded-lg">
+
+                            <h3 class="font-bold text-lg mb-2">Oficina de Registro y Control de Armas de Fuego</h3>
+
+                            <p><strong>Dirección:</strong> Autopista Norte, 18, San Salvador.</p>
+
+                            <p><strong>Teléfono General:</strong> (503) 2250-0100</p>
+
+                            <p><strong>Horario:</strong> Lunes a Viernes, 07:30 - 15:30</p>
+
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-lg">
+
+                            <h3 class="font-bold text-lg mb-2">Recursos en Línea y Correos</h3>
+
+                            <p><strong>Sitio Web Oficial:</strong> <a href="http://www.registrodearmas.mil.sv" target="_blank" class="text-blue-600 hover:underline">www.registrodearmas.mil.sv</a></p>
+
+                            <p><strong>Consultas Legales:</strong> asesorialegal@mdn.mil.sv</p>
+
+                            <p><strong>Información General:</strong> oir@mdn.mil.sv</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+ 
+
+    </div>
+
+ 
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const tabs = document.querySelectorAll('.nav-tab');
+
+            const sections = document.querySelectorAll('.section');
+
+            const reqNaturalBtn = document.getElementById('btn-natural');
+
+            const reqJuridicaBtn = document.getElementById('btn-juridica');
+
+            const reqNaturalContent = document.getElementById('req-natural');
+
+            const reqJuridicaContent = document.getElementById('req-juridica');
+
+            let chartsInitialized = false;
+
+ 
+
+            function showSection(targetId) {
+
+                sections.forEach(section => {
+
+                    if (section.id === targetId) {
+
+                        section.classList.add('section-active');
+
+                    } else {
+
+                        section.classList.remove('section-active');
+
+                    }
+
+                });
+
+ 
+
+                if (targetId === 'costos' && !chartsInitialized) {
+
+                    initCharts();
+
+                    chartsInitialized = true;
+
+                }
+
+            }
+
+ 
+
+            function setActiveTab(targetId) {
+
+                tabs.forEach(tab => {
+
+                    if (tab.dataset.target === targetId) {
+
+                        tab.classList.remove('tab-inactive');
+
+                        tab.classList.add('tab-active');
+
+                    } else {
+
+                        tab.classList.remove('tab-active');
+
+                        tab.classList.add('tab-inactive');
+
+                    }
+
+                });
+
+            }
+
+ 
+
+            tabs.forEach(tab => {
+
+                tab.addEventListener('click', (e) => {
+
+                    e.preventDefault();
+
+                    const targetId = e.target.dataset.target;
+
+                    showSection(targetId);
+
+                    setActiveTab(targetId);
+
+                });
+
+            });
+
+ 
+
+            reqNaturalBtn.addEventListener('click', () => {
+
+                reqNaturalContent.classList.remove('hidden');
+
+                reqJuridicaContent.classList.add('hidden');
+
+                reqNaturalBtn.classList.replace('bg-gray-300', 'bg-[#2D6A8D]');
+
+                reqNaturalBtn.classList.replace('text-gray-800', 'text-white');
+
+                reqJuridicaBtn.classList.replace('bg-[#2D6A8D]', 'bg-gray-300');
+
+                reqJuridicaBtn.classList.replace('text-white', 'text-gray-800');
+
+            });
+
+ 
+
+            reqJuridicaBtn.addEventListener('click', () => {
+
+                reqJuridicaContent.classList.remove('hidden');
+
+                reqNaturalContent.classList.add('hidden');
+
+                reqJuridicaBtn.classList.replace('bg-gray-300', 'bg-[#2D6A8D]');
+
+                reqJuridicaBtn.classList.replace('text-gray-800', 'text-white');
+
+                reqNaturalBtn.classList.replace('bg-[#2D6A8D]', 'bg-gray-300');
+
+                reqNaturalBtn.classList.replace('text-white', 'text-gray-800');
+
+            });
+
+ 
+
+            setActiveTab('inicio');
+
+            showSection('inicio');
+
+           
+
+            function initCharts() {
+
+                const costosData = {
+
+                    labels: ['Licencia (Uso/Rep./Recarga)', 'Devolución de Arma', 'Registro y Portación (ref. 2017)'],
+
+                    datasets: [{
+
+                        label: 'Costo en USD',
+
+                        data: [11.43, 11.00, 32.00],
+
+                        backgroundColor: ['#60A5FA', '#34D399', '#FBBF24'],
+
+                        borderColor: ['#3B82F6', '#10B981', '#F59E0B'],
+
+                        borderWidth: 1
+
+                    }]
+
+                };
+
+ 
+
+                const multasData = {
+
+                    labels: ['Falta Menos Grave (Lic. Vencida)', 'Falta Menos Grave (No Autorizar)', 'Faltas Graves (Ebriedad, etc.)'],
+
+                    datasets: [{
+
+                        label: 'Multa en USD',
+
+                        data: [62.93, 251.70, 503.40],
+
+                        backgroundColor: ['#FBBF24', '#F87171', '#EF4444'],
+
+                        borderColor: ['#F59E0B', '#DC2626', '#B91C1C'],
+
+                        borderWidth: 1
+
+                    }]
+
+                };
+
+               
+
+                const chartOptions = {
+
+                    maintainAspectRatio: false,
+
+                    scales: { y: { beginAtZero: true } },
+
+                    plugins: {
+
+                        legend: { display: false },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label: function(context) {
+
+                                    let label = context.dataset.label || '';
+
+                                    if (label) { label += ': '; }
+
+                                    if (context.parsed.y !== null) {
+
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+
+                                    }
+
+                                    return label;
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                };
+
+ 
+
+                new Chart(document.getElementById('costosChart'), { type: 'bar', data: costosData, options: chartOptions });
+
+                new Chart(document.getElementById('multasChart'), { type: 'bar', data: multasData, options: chartOptions });
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+
+</immersive>
